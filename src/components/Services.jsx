@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import useCategories from '../utils/useCategories';
+import { Link } from 'react-router-dom';
 
 const Services = () => {
   const [activeCategory, setActiveCategory] = useState(0);
@@ -38,6 +39,7 @@ const Services = () => {
               {activeCategory === index && (
                 <div className="pl-4 py-2 bg-white">
                   {Categories?.main_cat_array[activeCategory]?.sub_cat_array?.map((item) => (
+                    <Link to={`/service/${item.category_slug}`}>
                     <div key={item.cat_id} className="border rounded-lg p-2 shadow-sm mb-2">
                       <div className="flex items-center gap-4">
                         {/* Image */}
@@ -49,6 +51,7 @@ const Services = () => {
                         </div>
                       </div>
                     </div>
+                    </Link>
                   ))}
                 </div>
               )}
@@ -82,6 +85,7 @@ const Services = () => {
             </h3>
             <div className="grid grid-cols-2 gap-4">
               {Categories?.main_cat_array[activeCategory]?.sub_cat_array?.map((item) => (
+                <Link to={`/service/${item.category_slug}`}>
                 <div key={item.cat_id} className="border rounded-lg p-2 shadow-sm">
                   <div className="flex items-center gap-4">
                     {/* Image */}
@@ -93,13 +97,9 @@ const Services = () => {
                     </div>
                   </div>
                 </div>
+                </Link>
               ))}
             </div>
-          </div>
-        )}
-        {activeCategory === null && (
-          <div>
-            <p>Select a category to view items</p>
           </div>
         )}
       </div>

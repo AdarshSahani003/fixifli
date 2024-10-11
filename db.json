@@ -1,0 +1,75 @@
+{
+    "products": [
+      {
+        "id": 1,
+        "name": "Wireless Earbuds",
+        "rating": 4.5,
+        "price": 49.99,
+        "description": "High-quality wireless earbuds with noise cancellation and long battery life."
+      },
+      {
+        "id": 2,
+        "name": "Smartphone",
+        "rating": 4.7,
+        "price": 699.99,
+        "description": "Latest model smartphone with a high-resolution display and advanced camera features."
+      },
+      {
+        "id": 3,
+        "name": "Laptop",
+        "rating": 4.2,
+        "price": 899.99,
+        "description": "Lightweight laptop with powerful performance, suitable for both work and entertainment."
+      },
+      {
+        "id": 4,
+        "name": "Bluetooth Speaker",
+        "rating": 4.3,
+        "price": 59.99,
+        "description": "Portable Bluetooth speaker with rich bass and clear sound, perfect for outdoor use."
+      },
+      {
+        "id": 5,
+        "name": "Smart Watch",
+        "rating": 4.6,
+        "price": 199.99,
+        "description": "Stylish smart watch with fitness tracking, heart rate monitoring, and various apps."
+      },
+      {
+        "id": 6,
+        "name": "Gaming Mouse",
+        "rating": 4.8,
+        "price": 29.99,
+        "description": "High-precision gaming mouse with customizable buttons and RGB lighting."
+      },
+      {
+        "id": 7,
+        "name": "4K Monitor",
+        "rating": 4.4,
+        "price": 349.99,
+        "description": "Ultra HD monitor with a sleek design and vibrant colors for an immersive experience."
+      },
+      {
+        "id": 8,
+        "name": "Mechanical Keyboard",
+        "rating": 4.9,
+        "price": 89.99,
+        "description": "Durable mechanical keyboard with customizable keys and RGB backlighting."
+      },
+      {
+        "id": 9,
+        "name": "Portable Charger",
+        "rating": 4.1,
+        "price": 24.99,
+        "description": "Compact and efficient portable charger with fast charging capabilities for all your devices."
+      },
+      {
+        "id": 10,
+        "name": "Fitness Tracker",
+        "rating": 4.0,
+        "price": 99.99,
+        "description": "Wearable fitness tracker that monitors your steps, sleep, and heart rate accurately."
+      }
+    ]
+  }
+  

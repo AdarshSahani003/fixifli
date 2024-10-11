@@ -5,7 +5,7 @@ import Footer from './components/Footer'
 function App() {
 
   return (
-      <div className='flex flex-col'>
+      <div className='grid grid-rows-[auto_1fr_auto] min-h-screen'>
         <Navbar/>
         <Outlet/>
         <Footer/>

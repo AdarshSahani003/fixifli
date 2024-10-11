@@ -1,101 +1,86 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from "react";
+import useLocation from "../utils/useLocation";
+import NotificationBar from "./NotificationBar";
 
-const LocationDropdown = () => {
+const LocationDropDown = ({ onGetLocation }) => {
   const [manualLocation, setManualLocation] = useState('');
-  const [currentLocation, setCurrentLocation] = useState('');
-  const [latLng, setLatLng] = useState({ lat: null, lng: null });
-  const [isLocationServiceable, setIsLocationServiceable] = useState(true);
-  const [showPopup, setShowPopup] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState('');
+  const dropdownRef = useRef(null); // Create a ref for the dropdown
 
-  // Fetch city using the OpenWeatherMap API based on latitude and longitude
-  const fetchCityFromCoordinates = async (latitude, longitude) => {
-    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=830138d34242e1237bf9de46a35a7715`;
+  const {
+    checkLocation,
+    currentLocation,
+    showDropdown,
+  } = useLocation();
 
-    try {
-      const response = await fetch(url);
-      const data = await response.json();
-      const city = data.name;
-      setCurrentLocation(city);
-      validateLocation(city);
-    } catch (error) {
-      console.error('Error fetching city:', error);
-    }
+  const showNotification = (message) => {
+    setNotificationMessage(message);
+    setTimeout(() => {
+      setNotificationMessage('');
+    }, 3000);
   };
 
-  // Fetch user's current location using Geolocation API
-  const fetchCurrentLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const { latitude, longitude } = position.coords;
-        setLatLng({ lat: latitude, lng: longitude });
-        fetchCityFromCoordinates(latitude, longitude);
-      });
-    } else {
-      alert('Geolocation is not supported by this browser.');
-    }
-  };
-
- // Check if the location is serviceable (mock serviceable locations)
-    const validateLocation = (location) => {
-        const serviceableLocations = ['Delhi', 'Noida', 'Gorakhpur', 'Gurugram', 'Bangalore', 'Pune', 'Greater Noida', 'New Delhi'];
-        
-        const isServiceable = serviceableLocations.some((list) =>
-        list.toLowerCase().includes(location.toLowerCase())
-        );
-    
-        if (isServiceable) {
-        setIsLocationServiceable(true);
-        alert(`${location} is serviceable!`);
-        } else {
-        setIsLocationServiceable(false);
-        alert(`${location} is not serviceable!`);
-        }
-    };
-  
-
-  // Handle manual location submission
-  const handleManualLocationSubmit = (e) => {
+  const handleManualLocationSubmit = async (e) => {
     e.preventDefault();
-    validateLocation(manualLocation);
+    const isValid = await checkLocation(manualLocation);
+    if (!isValid) {
+      showNotification(`We are not in ${manualLocation} yet.`);
+    } else {
+      onGetLocation(manualLocation);
+    }
   };
+
+  const handleUseCurrentLocation = async () => {
+    const isValid = await checkLocation();
+    if (!isValid) {
+      showNotification(`Service is not available in ${currentLocation} yet.`);
+    } else {
+      onGetLocation(currentLocation);
+    }
+  };
+
+  // Close dropdown on clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        // Call a function to close the dropdown (you might need to add a state or callback for that)
+        // For example, if you have a function to update showDropdown in the parent:
+        // setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownRef]);
 
   return (
-    <div className="absolute top-10 left-0 bg-white border rounded-lg shadow-lg p-4 w-52">
-      
-      {/* Input for manually entering location */}
-      <form onSubmit={handleManualLocationSubmit}>
-        <input
-          type="text"
-          placeholder="Enter location..."
-          value={manualLocation}
-          onChange={(e) => setManualLocation(e.target.value)}
-          className="border mt-2 p-2 w-full rounded"
-        />
-        
-      </form>
+    <div>
+      <NotificationBar message={notificationMessage} />
 
-      {/* Button to use current location */}
-      <button
-        onClick={fetchCurrentLocation}
-        className="bg-white text-blue-500 mt-4 p-2 w-full rounded"
-      >
-        Use Current Location
-      </button>
-
-      {/* Display current location */}
-      {currentLocation && <p className="mt-4">Your current location: {currentLocation}</p>}
-
-      {/* Conditionally show serviceable status */}
-      {!isLocationServiceable && (
-        <div className="mt-4">
-          <p>Location not serviceable!</p>
-          <a href="/not-available" className="text-red-500 underline">
-            We are not here yet
-          </a>
+      {showDropdown && (
+        <div ref={dropdownRef} className="absolute top-10 left-0 bg-white border rounded-lg shadow-lg p-4 w-52">
+          <form onSubmit={handleManualLocationSubmit}>
+            <input
+              type="text"
+              placeholder="Enter location..."
+              value={manualLocation}
+              onChange={(e) => setManualLocation(e.target.value)}
+              className="border mt-2 p-2 w-full rounded"
+            />
+          </form>
+          <button
+            onClick={handleUseCurrentLocation}
+            className="bg-blue-500 text-white mt-4 p-2 w-full rounded"
+          >
+            Use Current Location
+          </button>
         </div>
       )}
     </div>
   );
 };
 
-export default LocationDropdown;
+export default LocationDropDown;

@@ -4,6 +4,7 @@ import ServiceCard from './ServiceCard';
 import HowItWorks from './HowItWorks';
 import HowToUse from './HowToUse';
 import Feedbacks from './Feedbacks';
+import ServicePage from './ServicePage';
 
 const Body = () => {
 
