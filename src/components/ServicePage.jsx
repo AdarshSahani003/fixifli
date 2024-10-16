@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import useLocation from '../utils/useLocation';
 import NotificationBar from './NotificationBar'; // Ensure this import exists
 import HowItWorks from "./HowItWorks";
 import HowToUse from "./HowToUse";
 import { useParams } from "react-router-dom";
 import ProductBar from "./ProductBar";
+import { useDispatch } from 'react-redux';
+import { addItem } from "../utils/cartSlice";
 
 const ServicePage = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +17,11 @@ const ServicePage = () => {
     city: '',
     serviceTime: ''
   });
+
+  const dispatch = useDispatch();
+  const cartLength = useSelector((state) => state.cart.items.length);
+  console.log(cartLength);
+
 
   const serviceName = useParams();
 
@@ -41,6 +49,7 @@ const ServicePage = () => {
         setCurrentLocation(formData.city); // Update globally
         showNotification('Thanks, Our team will contact you soon.');
         setIsBooked(true);
+        dispatch(addItem(products));
       } else {
         showNotification('This location is not serviceable.');
       }
@@ -60,7 +69,7 @@ const ServicePage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('http://localhost:3001/products');
+        const response = await fetch('http://localhost:3000/products');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }

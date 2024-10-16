@@ -11,6 +11,7 @@ const SearchBar = () => {
 
   // Fetching categories using the custom hook
   const data = useCategories();
+  console.log(data);
 
   const categories = data?.main_cat_array?.flatMap((mainCat) =>
     mainCat?.sub_cat_array?.map((subCat) => ({

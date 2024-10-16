@@ -4,6 +4,7 @@ import {
   RouterProvider,
   Outlet,
 } from "react-router-dom";
+import { Provider } from 'react-redux'
 import useLocation from './utils/useLocation.js';
 import App from './App.jsx'
 import './index.css'
@@ -42,5 +43,7 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById('root')).render(
+  <Provider store={appStore}>
     <RouterProvider router={router} />
+  </Provider>
 )
